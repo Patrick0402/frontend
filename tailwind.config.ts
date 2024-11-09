@@ -1,11 +1,10 @@
-import type { Config } from "tailwindcss";
-
-const config: Config = {
+module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class', // Ensure this is set to 'class'
   theme: {
     extend: {
       colors: {
@@ -22,5 +21,3 @@ const config: Config = {
   },
   plugins: [],
 };
-
-export default config;
