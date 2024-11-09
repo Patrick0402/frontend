@@ -2,12 +2,13 @@
 
 import React from "react";
 import { useTheme } from "../../context/themeContext"; // Importing the theme context hook
+import { FaSun, FaMoon } from "react-icons/fa"; // Importing sun and moon icons from React Icons
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger" | "theme"; 
-  size?: "small" | "medium" | "large";          
-  isLoading?: boolean;                          
-  children: React.ReactNode;                    
+  variant?: "primary" | "secondary" | "danger" | "theme";
+  size?: "small" | "medium" | "large";
+  isLoading?: boolean;
+  children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,7 +18,6 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-
   const { theme, toggleTheme } = useTheme(); // Use the theme context
 
   // Map for the button variants
@@ -27,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
     danger: "bg-red-500 text-white hover:bg-red-600",
     theme: theme === "dark"
       ? "bg-gray-800 text-white hover:bg-gray-700"  // Dark mode button
-      : "bg-yellow-500 text-gray-800 hover:bg-yellow-400", // Light mode button
+      : "bg-gray-100 text-gray-800 hover:bg-gray-200", // Light mode button
   };
 
   // Map for size variants
@@ -40,21 +40,12 @@ const Button: React.FC<ButtonProps> = ({
   // Determine the classNames for the button
   const buttonClassNames = `flex items-center justify-center rounded-md font-medium transition ${variantClasses[variant]} ${sizeClasses[size]} ${isLoading ? "opacity-50 cursor-not-allowed" : ""} w-full`;
 
-  // Determine the correct icon based on the theme
-  const getIcon = () => {
-    if (variant === "theme") {
-      return theme === "dark" ? (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M12 3v1.05A8 8 0 0 1 18 12a8 8 0 0 1-6 13 8 8 0 0 1-6-13 8 8 0 0 1 6-8.95V3a10 10 0 1 0 0 20A10 10 0 1 0 12 3z" />
-        </svg>
-      ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M12 4a8 8 0 1 0 0 16A8 8 0 0 0 12 4z" />
-        </svg>
-      );
-    }
-    return null; // Return null if no theme icon is required
-  };
+  // Universal dark mode icon (moon icon or other) for theme toggle
+  const themeIcon = theme === "dark" ? (
+    <FaMoon className="h-6 w-6" />
+  ) : (
+    <FaSun className="h-6 w-6" />
+  );
 
   return (
     <button
@@ -85,7 +76,7 @@ const Button: React.FC<ButtonProps> = ({
           ></path>
         </svg>
       )}
-      {getIcon() || children} {/* Show icon if it's the theme button, otherwise show the children */}
+      {variant === "theme" ? themeIcon : children} {/* Show the universal theme icon for "theme" variant, otherwise show children */}
     </button>
   );
 };
