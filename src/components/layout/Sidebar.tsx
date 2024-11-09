@@ -9,6 +9,14 @@ const Sidebar: React.FC = () => {
       <ul className="space-y-6">
         <li>
           <Link
+            href="/"
+            className="block px-4 py-3 rounded-md text-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-200"
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link
             href="/products/register"
             className="block px-4 py-3 rounded-md text-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-200"
           >
