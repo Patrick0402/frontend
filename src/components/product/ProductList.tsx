@@ -1,32 +1,26 @@
 // src/components/product/ProductList.tsx
-"use client"; // Adicione esta linha no topo
+"use client"; // Garante que o componente seja renderizado no cliente
 
 import React from "react";
 import useProducts from "../../hooks/useProducts";
-import Button from "../ui/Button";
+import ProductCard from "./ProductCard"; // Importando o ProductCard
 
 const ProductList: React.FC = () => {
-  const { products, loading, deleteProduct } = useProducts();
+  const { products, loading, deleteProduct, handleToggleStatus } = useProducts(); // Adicionando a função handleToggleStatus
 
+  // Renderiza o carregamento, se necessário
   if (loading) return <p>Carregando produtos...</p>;
 
   return (
     <div className="space-y-4">
+      {/* Exibe a lista de produtos usando o componente ProductCard */}
       {products.map((product) => (
-        <div
+        <ProductCard 
           key={product.id}
-          className="p-4 bg-gray-200 dark:bg-gray-800 rounded-lg flex justify-between items-center"
-        >
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {product.name}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">Preço: R$ {product.price}</p>
-          </div>
-          <Button variant="danger" onClick={() => deleteProduct(product.id)}>
-            Deletar
-          </Button>
-        </div>
+          product={product}          // Passa os dados do produto
+          onDelete={deleteProduct}   // Passa a função de exclusão
+          onToggleStatus={handleToggleStatus}  // Passa a função de alternância de status
+        />
       ))}
     </div>
   );

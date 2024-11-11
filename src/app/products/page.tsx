@@ -6,6 +6,7 @@ import Footer from "../../components/layout/Footer";
 import ProductList from "../../components/product/ProductList";
 
 const ProductsPage: React.FC = () => {
+
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
       <Sidebar />

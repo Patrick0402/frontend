@@ -32,7 +32,7 @@ const useProducts = () => {
       if (isAxiosError(error) && isCancel(error)) {
         console.log("Requisição cancelada:", error.message);
       } else {
-        console.error("Failed to fetch products:", error);
+        console.error("Falha ao buscar os produtos:", error);
       }
     } finally {
       setLoading(false);
@@ -44,11 +44,25 @@ const useProducts = () => {
       await axiosInstance.delete(`/products/${id}`);
       setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
     } catch (error) {
-      console.error("Failed to delete product:", error);
+      console.error("Falha ao deletar o produto:", error);
     }
   };
 
-  return { products, loading, fetchProducts, deleteProduct };
+  const handleToggleStatus = async (id: number, isActive: boolean) => {
+    try {
+      await axiosInstance.patch(`/products/${id}`, { isActive });
+      // Atualiza o estado local após a alteração
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === id ? { ...product, isActive } : product
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar o status do produto", error);
+    }
+  };
+
+  return { products, loading, deleteProduct, handleToggleStatus }; // Retorne também o handleToggleStatus
 };
 
 // Type guard para verificar se o erro é uma instância do AxiosError
