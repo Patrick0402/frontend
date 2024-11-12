@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";  // Para redirecionar após o suces
 import Header from "../../../components/layout/Header";  // Importando o Header
 import Sidebar from "../../../components/layout/Sidebar";  // Importando o Sidebar
 import Footer from "../../../components/layout/Footer";  // Importando o Footer
-import Button from "../../../components/ui/Button";  // Botão reutilizável
-import Input from "../../../components/ui/Input";  // Importando o componente Input
+import ProductForm from "@/components/product/ProductForm";
 
 const RegisterProductPage: React.FC = () => {
   const [productName, setProductName] = useState<string>("");
@@ -57,62 +56,9 @@ const RegisterProductPage: React.FC = () => {
         <Header />
 
         <main className="flex-1 p-6 space-y-6 bg-white dark:bg-gray-700">
-          <div className="max-w-md mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center">Registrar Novo Produto</h2>
-            
-            {/* Exibição de erro */}
-            {error && <p className="text-red-600 text-center mt-4">{error}</p>}
-            
-            <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-              {/* Usando o componente Input para o Nome do Produto */}
-              <Input
-                label="Nome do Produto"
-                type="text"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                required
-                error={error ? "Nome é obrigatório" : ""}
-              />
-              
-              {/* Usando o componente Input para o Preço do Produto */}
-              <Input
-                label="Preço do Produto"
-                type="number"
-                value={productPrice}
-                onChange={(e) => setProductPrice(e.target.value)}
-                required
-                error={error ? "Preço é obrigatório e deve ser um número válido" : ""}
-              />
 
-              {/* Controle para o campo "Ativo" */}
-              <div>
-                <label className="block text-gray-800 dark:text-gray-100">Status</label>
-                <div className="flex items-center space-x-4 mt-2">
-                  <label htmlFor="isActive" className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="isActive"
-                      checked={isActive}
-                      onChange={(e) => setIsActive(e.target.checked)}
-                      className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-gray-800 dark:text-gray-100">Ativo</span>
-                  </label>
-                </div>
-              </div>
+          <ProductForm/>
 
-              <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="large"
-                  isLoading={isLoading}
-                >
-                  {isLoading ? "Registrando..." : "Registrar Produto"}
-                </Button>
-              </div>
-            </form>
-          </div>
         </main>
 
         {/* Footer */}

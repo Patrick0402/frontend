@@ -9,7 +9,10 @@ export interface Product {
   id: number;
   name: string;
   price: number;
+  quantity_in_stock: number;
   isActive: boolean;
+  description?: string; 
+  category?: string;
 }
 
 const useProducts = () => {
