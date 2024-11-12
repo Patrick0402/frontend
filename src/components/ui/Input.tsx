@@ -9,6 +9,7 @@ interface InputProps {
   placeholder?: string;
   error?: string;
   required?: boolean;
+  disabled?: boolean; // Propriedade opcional para desativar o input
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   placeholder = "",
   error = "",
   required = false,
+  disabled = false, // Definindo o padrão como não desativado
 }) => {
   return (
     <div className="space-y-2">
@@ -36,10 +38,13 @@ const Input: React.FC<InputProps> = ({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
+        disabled={disabled} // Adicionando disabled ao input
+        aria-invalid={!!error} // Indicação de erro para acessibilidade
         className={`w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 
         ${error ? "border-red-500" : "border-gray-300"} 
         ${error ? "text-red-500" : "text-gray-800"} 
-        dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600`}
+        dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 
+        ${disabled ? "bg-gray-100 dark:bg-gray-800 cursor-not-allowed" : ""}`} // Estilização condicional para o estado desativado
       />
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>

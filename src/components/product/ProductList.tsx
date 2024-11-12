@@ -1,27 +1,64 @@
-// src/components/product/ProductList.tsx
-"use client"; // Garante que o componente seja renderizado no cliente
+"use client";
 
 import React from "react";
 import useProducts from "../../hooks/useProducts";
-import ProductCard from "./ProductCard"; // Importando o ProductCard
+import ProductCard from "./ProductCard";
+import Scrollbar from "../ui/Scrollbar";  // Importando o componente Scrollbar
 
 const ProductList: React.FC = () => {
-  const { products, loading, deleteProduct, handleToggleStatus } = useProducts(); // Adicionando a função handleToggleStatus
+  const { products, loading, deleteProduct, handleToggleStatus } = useProducts();
 
-  // Renderiza o carregamento, se necessário
   if (loading) return <p>Carregando produtos...</p>;
 
+  const activeProducts = Array.isArray(products)
+    ? products.filter((product) => product.isActive).sort((a, b) => b.id - a.id)
+    : [];
+
+  const inactiveProducts = Array.isArray(products)
+    ? products.filter((product) => !product.isActive).sort((a, b) => b.id - a.id)
+    : [];
+
   return (
-    <div className="space-y-4">
-      {/* Exibe a lista de produtos usando o componente ProductCard */}
-      {products.map((product) => (
-        <ProductCard 
-          key={product.id}
-          product={product}          // Passa os dados do produto
-          onDelete={deleteProduct}   // Passa a função de exclusão
-          onToggleStatus={handleToggleStatus}  // Passa a função de alternância de status
-        />
-      ))}
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Coluna de Produtos Ativos */}
+      <div className="flex-1">
+        <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Produtos Ativos</h3>
+        {/* Envolvendo com o componente Scrollbar */}
+        <Scrollbar className="h-[70vh] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
+          {activeProducts.length > 0 ? (
+            activeProducts.map((product) => (
+              <ProductCard 
+                key={product.id}
+                product={product}
+                onDelete={deleteProduct}
+                onToggleStatus={handleToggleStatus}
+              />
+            ))
+          ) : (
+            <p className="text-gray-700 dark:text-gray-300">Nenhum produto ativo encontrado.</p>
+          )}
+        </Scrollbar>
+      </div>
+
+      {/* Coluna de Produtos Inativos */}
+      <div className="flex-1">
+        <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Produtos Inativos</h3>
+        {/* Envolvendo com o componente Scrollbar */}
+        <Scrollbar className="h-[70vh] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
+          {inactiveProducts.length > 0 ? (
+            inactiveProducts.map((product) => (
+              <ProductCard 
+                key={product.id}
+                product={product}
+                onDelete={deleteProduct}
+                onToggleStatus={handleToggleStatus}
+              />
+            ))
+          ) : (
+            <p className="text-gray-700 dark:text-gray-300">Nenhum produto inativo encontrado.</p>
+          )}
+        </Scrollbar>
+      </div>
     </div>
   );
 };

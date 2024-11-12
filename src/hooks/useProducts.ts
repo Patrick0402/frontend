@@ -30,13 +30,14 @@ const useProducts = () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get<Product[]>("/products", { signal });
-      setProducts(response.data);
+      setProducts(Array.isArray(response.data) ? response.data : []); // Garante que `products` seja uma lista
     } catch (error: unknown) {
       if (isAxiosError(error) && isCancel(error)) {
         console.log("Requisição cancelada:", error.message);
       } else {
         console.error("Falha ao buscar os produtos:", error);
       }
+      setProducts([]); // Define `products` como uma lista vazia em caso de erro
     } finally {
       setLoading(false);
     }
