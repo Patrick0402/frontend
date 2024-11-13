@@ -128,7 +128,16 @@ const ProductForm: React.FC = () => {
     fieldErrors.productName === "";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+    <div
+      className="min-w-screen min-h-full bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md"
+      style={{
+        minHeight: "500px", // Garantir altura mínima
+        maxWidth: "800px",  // Largura máxima
+        width: "100%",      // Largura 100% dentro do contêiner
+        overflowY: "auto",  // Controle de rolagem vertical
+        margin: "0 auto",   // Centralizar horizontalmente
+      }}
+    >
       <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-6">Registrar Novo Produto</h2>
 
       {notification && (
