@@ -1,3 +1,6 @@
+// src/components/product/ProductForm.tsx
+
+
 import React, { useState } from "react";
 import axiosInstance from "../../services/api";
 import Button from "../../components/ui/Button";

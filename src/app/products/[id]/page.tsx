@@ -1,3 +1,5 @@
+// src/app/products/[id]/page.tsx
+
 "use client"; // Garante que o código será executado no lado do cliente
 
 import React, { useState, useEffect } from "react";

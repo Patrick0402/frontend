@@ -1,3 +1,5 @@
+// /src/components/ui/ThemeToggle.tsx
+
 "use client"; // Diretiva para garantir que seja executado no cliente
 
 import React from "react";

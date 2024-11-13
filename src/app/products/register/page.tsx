@@ -1,3 +1,5 @@
+// src/app/products/register/page.tsx
+
 "use client"; // Garante que a página será renderizada no lado do cliente
 
 import React from "react";

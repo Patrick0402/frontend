@@ -1,4 +1,5 @@
 // src/app/products/page.tsx
+
 import React from "react";
 import ProductList from "../../components/product/ProductList";
 
