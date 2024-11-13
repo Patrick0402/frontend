@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { useTheme } from "../../context/themeContext"; // Importing the theme context hook
-import { FaSun, FaMoon } from "react-icons/fa"; // Importing sun and moon icons from React Icons
+import { useTheme } from "../../context/themeContext"; // Importando o hook do contexto de tema
+import { FaSun, FaMoon } from "react-icons/fa"; // Importando os ícones de sol e lua
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger" | "theme";
+  variant?: "primary" | "secondary" | "danger" | "theme" | "link"; // Adicionando a variante "link"
   size?: "small" | "medium" | "large";
   isLoading?: boolean;
   children: React.ReactNode;
@@ -18,29 +18,35 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const { theme, toggleTheme } = useTheme(); // Use the theme context
+  const { theme, toggleTheme } = useTheme(); // Usando o contexto de tema
 
-  // Map for the button variants
+  // Definindo as classes de estilo para cada variante de botão
   const variantClasses = {
     primary: "bg-blue-500 text-white hover:bg-blue-600",
     secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
     danger: "bg-red-500 text-white hover:bg-red-600",
     theme: theme === "dark"
-      ? "bg-gray-800 text-white hover:bg-gray-700"  // Dark mode button
-      : "bg-gray-100 text-gray-800 hover:bg-gray-200", // Light mode button
+      ? "bg-gray-800 text-white hover:bg-gray-700"
+      : "bg-gray-100 text-gray-800 hover:bg-gray-200",
+    link: theme === "dark"
+      ? "bg-transparent text-white hover:text-gray-100"
+      : "bg-transparent text-gray-800 hover:text-blue-900"
   };
 
-  // Map for size variants
+  // Definindo as classes de estilo para os tamanhos de botão
   const sizeClasses = {
     small: "px-3 py-1 text-sm",
-    medium: "px-4 py-2",
+    medium: "px-4 py-2 text-base", // Usando text-base para garantir uma boa leitura
     large: "px-6 py-3 text-lg",
   };
 
-  // Determine the classNames for the button
-  const buttonClassNames = `flex items-center justify-center rounded-md font-medium transition ${variantClasses[variant]} ${sizeClasses[size]} ${isLoading ? "opacity-50 cursor-not-allowed" : ""} w-full`;
+  // Tornando o botão responsivo
+  const responsiveClasses = "w-full sm:w-auto"; // O botão terá 100% de largura em telas pequenas e ajustará em telas maiores
 
-  // Universal dark mode icon (moon icon or other) for theme toggle
+  // Combinando as classes em uma string
+  const buttonClassNames = `flex items-center justify-center rounded-md font-medium transition-all ${variantClasses[variant]} ${sizeClasses[size]} ${responsiveClasses} ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`;
+
+  // Definindo o ícone baseado no tema
   const themeIcon = theme === "dark" ? (
     <FaMoon className="h-6 w-6" />
   ) : (
@@ -51,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       className={buttonClassNames}
       disabled={isLoading || props.disabled}
-      onClick={variant === "theme" ? toggleTheme : undefined} // Only toggle theme for "theme" variant
+      onClick={variant === "theme" ? toggleTheme : undefined} // Aciona o toggle de tema apenas se a variante for "theme"
       {...props}
     >
       {isLoading && (
@@ -76,7 +82,7 @@ const Button: React.FC<ButtonProps> = ({
           ></path>
         </svg>
       )}
-      {variant === "theme" ? themeIcon : children} {/* Show the universal theme icon for "theme" variant, otherwise show children */}
+      {variant === "theme" ? themeIcon : children} {/* Exibe o ícone de tema ou o conteúdo do botão */}
     </button>
   );
 };

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="w-64 bg-gray-800 text-white min-h-screen p-6 dark:bg-gray-900 dark:text-gray-100">
+    <div className="w-64 bg-gray-200 text-gray-800 min-h-screen p-6 dark:bg-gray-800 dark:text-gray-100">
       <div className="text-2xl font-semibold mb-8">Menu</div>
       <ul className="space-y-6">
         <li>

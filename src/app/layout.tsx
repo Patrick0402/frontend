@@ -4,7 +4,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "../context/themeContext"; // Importa o ThemeProvider
-
+import Header from "@/components/layout/Header"; // Importa o Header
+import Footer from "@/components/layout/Footer"; // Importa o Footer
+import Sidebar from "@/components/layout/Sidebar"; // Importa o Sidebar
 
 const geistSans = localFont({
   src: "../../public/fonts/GeistVF.woff",
@@ -34,9 +36,26 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          {children}
+          {/* Layout de Flexbox */}
+          <div className="flex min-h-screen flex-col">
+            {/* Cabeçalho */}
+            <Header />
+            
+            {/* Layout principal com Sidebar e Conteúdo */}
+            <div className="flex flex-1">
+              {/* Sidebar */}
+           
+              
+              {/* Conteúdo principal */}
+              <main className="flex-1 bg-gray-100">
+                {children}
+              </main>
+            </div>
+            
+            {/* Rodapé */}
+            <Footer />
+          </div>
         </ThemeProvider>
-
       </body>
     </html>
   );

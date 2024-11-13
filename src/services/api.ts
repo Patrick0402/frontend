@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "https://sturdy-space-rotary-phone-jx7jjxq9q6rfq4g4-3001.app.github.dev/",
 });
 
 export default api;
