@@ -129,7 +129,7 @@ const ProductForm: React.FC = () => {
 
   return (
     <div
-      className="min-w-screen min-h-full bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md"
+      className="min-w-screen min-h-full bg-gray-50 dark:bg-gray-800 p-8 rounded-lg shadow-xl"
       style={{
         minHeight: "500px", // Garantir altura mínima
         maxWidth: "800px",  // Largura máxima

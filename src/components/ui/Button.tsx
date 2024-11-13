@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
     : "bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white",
 
     secondary: theme === "dark"
-      ? "bg-transparent border-2 border-gray-500 text-gray-400 hover:bg-gray-500 hover:text-white"
+      ? "bg-transparent border-2 border-gray-400 text-gray-400 hover:bg-gray-400 hover:text-white"
       : "bg-transparent border-2 border-gray-500 text-gray-800 hover:bg-gray-500 hover:text-white",
 
     danger: "bg-red-500 text-white hover:bg-red-600",

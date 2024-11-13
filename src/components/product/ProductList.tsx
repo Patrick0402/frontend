@@ -26,7 +26,7 @@ const ProductList: React.FC = () => {
       <div className="flex-1">
         <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Produtos Ativos</h3>
         {/* Envolvendo com o componente Scrollbar */}
-        <Scrollbar className="h-[70vh] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
+        <Scrollbar className="h-[70vh] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
           {activeProducts.length > 0 ? (
             activeProducts.map((product) => (
               <ProductCard 
@@ -46,7 +46,7 @@ const ProductList: React.FC = () => {
       <div className="flex-1">
         <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Produtos Inativos</h3>
         {/* Envolvendo com o componente Scrollbar */}
-        <Scrollbar className="h-[70vh] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
+        <Scrollbar className="h-[70vh] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
           {inactiveProducts.length > 0 ? (
             inactiveProducts.map((product) => (
               <ProductCard 
