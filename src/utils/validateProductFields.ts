@@ -1,3 +1,5 @@
+// src/components/utils/validateProductFields.ts
+
 export interface FieldErrors {
     productName: string;
     productPrice: string;

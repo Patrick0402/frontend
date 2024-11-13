@@ -6,7 +6,7 @@ import ThemeToggle from "../ui/ThemeToggle";
 
 const Header: React.FC = () => {
   return (
-    <header className="sticky top-0 z-50 p-4 bg-gray-100 shadow-md dark:bg-gray-700 dark:text-white transition-all duration-300 ease-in-out">
+    <header className="sticky top-0 z-50 p-4 bg-gray-200 shadow-md dark:bg-gray-700 dark:text-white transition-all duration-300 ease-in-out">
       <div className="flex items-center justify-between w-full px-2"> 
         {/* Logo/Texto do título */}
         <div className="text-2xl font-semibold text-gray-800 dark:text-gray-100">

@@ -1,61 +1,68 @@
-// src/hooks/useProducts.ts
 "use client";
 
-import { useEffect, useState } from "react";
-import axiosInstance from "../services/api"; // Instância configurada do axios
-import { AxiosError, isCancel } from "axios"; // Importa apenas AxiosError e isCancel
+// src/components/hooks/useProducts.ts
 
+import { useEffect, useState, useCallback } from "react";
+import axiosInstance from "../services/api";
+import { AxiosError, isCancel } from "axios";
+
+// Interface do Produto
 export interface Product {
   id: number;
   name: string;
   price: number;
   quantity_in_stock: number;
   isActive: boolean;
-  description?: string; 
+  description?: string;
   category?: string;
 }
 
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isUpdatingQuantity, setIsUpdatingQuantity] = useState(false); // Controle de carregamento para quantidade
 
+  // Função que busca os produtos
+  const fetchProducts = useCallback(async (signal: AbortSignal) => {
+    setLoading(true);
+    try {
+      const { data } = await axiosInstance.get<Product[]>("/products", { signal });
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (error) {
+      // Verifique se o erro é de cancelamento e ignore o log
+      if (isAxiosError(error) && isCancel(error)) {
+        // Apenas não logue quando for um erro de cancelamento
+        return;
+      } else {
+        console.error("Falha ao buscar os produtos:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Hook useEffect para buscar os produtos quando o componente for montado
   useEffect(() => {
     const controller = new AbortController();
     fetchProducts(controller.signal);
 
-    return () => controller.abort(); // Cancela a requisição se o componente for desmontado
-  }, []);
+    return () => controller.abort();
+  }, [fetchProducts]);
 
-  const fetchProducts = async (signal: AbortSignal) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get<Product[]>("/products", { signal });
-      setProducts(Array.isArray(response.data) ? response.data : []); // Garante que `products` seja uma lista
-    } catch (error: unknown) {
-      if (isAxiosError(error) && isCancel(error)) {
-        console.log("Requisição cancelada:", error.message);
-      } else {
-        console.error("Falha ao buscar os produtos:", error);
-      }
-      setProducts([]); // Define `products` como uma lista vazia em caso de erro
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const deleteProduct = async (id: number) => {
+  // Função para deletar um produto
+  const deleteProduct = useCallback(async (id: number) => {
     try {
       await axiosInstance.delete(`/products/${id}`);
       setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
     } catch (error) {
       console.error("Falha ao deletar o produto:", error);
     }
-  };
+  }, []);
 
-  const handleToggleStatus = async (id: number, isActive: boolean) => {
+  // Função para alternar o status de ativo/inativo do produto
+  const handleToggleStatus = useCallback(async (id: number, isActive: boolean) => {
     try {
       await axiosInstance.patch(`/products/${id}`, { isActive });
-      // Atualiza o estado local após a alteração
       setProducts((prevProducts) =>
         prevProducts.map((product) =>
           product.id === id ? { ...product, isActive } : product
@@ -64,12 +71,38 @@ const useProducts = () => {
     } catch (error) {
       console.error("Erro ao atualizar o status do produto", error);
     }
-  };
+  }, []);
 
-  return { products, loading, deleteProduct, handleToggleStatus }; // Retorne também o handleToggleStatus
+  // Função para atualizar a quantidade do produto
+  const handleQuantityChange = useCallback(async (id: number, newQuantity: number) => {
+    if (isUpdatingQuantity) return; // Impede múltiplas requisições enquanto já estiver atualizando
+    setIsUpdatingQuantity(true); // Inicia o estado de carregamento
+
+    try {
+      await axiosInstance.patch(`/products/${id}`, { quantity_in_stock: newQuantity });
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === id ? { ...product, quantity_in_stock: newQuantity } : product
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar a quantidade do produto", error);
+    } finally {
+      setIsUpdatingQuantity(false); // Finaliza o estado de carregamento
+    }
+  }, [isUpdatingQuantity]);
+
+  return {
+    products,
+    loading,
+    isUpdatingQuantity,
+    deleteProduct,
+    handleToggleStatus,
+    handleQuantityChange,
+  };
 };
 
-// Type guard para verificar se o erro é uma instância do AxiosError
+// Função de tipo de erro do Axios
 function isAxiosError(error: unknown): error is AxiosError {
   return (error as AxiosError).isAxiosError !== undefined;
 }

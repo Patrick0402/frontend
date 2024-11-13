@@ -1,11 +1,13 @@
+// frontend/src/components/ui/Button.tsx
+
 "use client";
 
 import React from "react";
-import { useTheme } from "../../context/themeContext"; // Importando o hook do contexto de tema
-import { FaSun, FaMoon } from "react-icons/fa"; // Importando os ícones de sol e lua
+import { useTheme } from "../../context/themeContext";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger" | "theme" | "link"; // Adicionando a variante "link"
+  variant?: "primary" | "secondary" | "danger" | "theme" | "link";
   size?: "small" | "medium" | "large";
   isLoading?: boolean;
   children: React.ReactNode;
@@ -18,13 +20,12 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const { theme, toggleTheme } = useTheme(); // Usando o contexto de tema
+  const { theme, toggleTheme } = useTheme();
 
-  // Definindo as classes de estilo para cada variante de botão
   const variantClasses = {
     primary: theme === "dark"
-      ? "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-      : "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
+    ? "bg-transparent border-2 border-blue-300 text-blue-300 hover:bg-blue-300 hover:text-white"
+    : "bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white",
 
     secondary: theme === "dark"
       ? "bg-transparent border-2 border-gray-500 text-gray-400 hover:bg-gray-500 hover:text-white"
@@ -33,28 +34,25 @@ const Button: React.FC<ButtonProps> = ({
     danger: "bg-red-500 text-white hover:bg-red-600",
     
     theme: theme === "dark"
-      ? "bg-gray-800 text-white hover:bg-gray-700"
-      : "bg-gray-100 text-gray-800 hover:bg-gray-200",
+      ? "bg-transparent text-white hover:bg-gray-800"
+      : "bg-transparent text-gray-800 hover:bg-gray-400",
 
     link: theme === "dark"
-      ? "bg-transparent text-white hover:text-gray-100"
+      ? "bg-transparent text-white hover:text-gray-100 underline"
       : "bg-transparent text-gray-800 hover:text-blue-900 underline"
   };
 
-  // Definindo as classes de estilo para os tamanhos de botão
   const sizeClasses = {
     small: "px-3 py-1 text-sm",
-    medium: "px-4 py-2 text-base", // Usando text-base para garantir uma boa leitura
+    medium: "px-4 py-2 text-base",
     large: "px-6 py-3 text-lg",
   };
 
-  // Tornando o botão responsivo
-  const responsiveClasses = "w-full sm:w-auto"; // O botão terá 100% de largura em telas pequenas e ajustará em telas maiores
+  // Removendo w-full para limitar a área clicável ao próprio botão
+  const buttonClassNames = `flex items-center justify-center rounded-md font-medium transition-all ${variantClasses[variant]} ${sizeClasses[size]} ${
+    isLoading ? "opacity-50 cursor-not-allowed" : ""
+  }`;
 
-  // Combinando as classes em uma string
-  const buttonClassNames = `flex items-center justify-center rounded-md font-medium transition-all ${variantClasses[variant]} ${sizeClasses[size]} ${responsiveClasses} ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`;
-
-  // Definindo o ícone baseado no tema
   const themeIcon = theme === "dark" ? (
     <FaMoon className="h-6 w-6" />
   ) : (
@@ -65,7 +63,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       className={buttonClassNames}
       disabled={isLoading || props.disabled}
-      onClick={variant === "theme" ? toggleTheme : undefined} // Aciona o toggle de tema apenas se a variante for "theme"
+      onClick={variant === "theme" ? toggleTheme : undefined}
       {...props}
     >
       {isLoading && (
@@ -90,7 +88,7 @@ const Button: React.FC<ButtonProps> = ({
           ></path>
         </svg>
       )}
-      {variant === "theme" ? themeIcon : children} {/* Exibe o ícone de tema ou o conteúdo do botão */}
+      {variant === "theme" ? themeIcon : children}
     </button>
   );
 };
