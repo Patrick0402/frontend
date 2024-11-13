@@ -1,14 +1,11 @@
-// /src/components/ui/ThemeToggle.tsx
-
-"use client"; // Diretiva para garantir que seja executado no cliente
+"use client";
 
 import React from "react";
 import { useTheme } from "../../context/themeContext";
 import Button from "./Button";
 
 const ThemeToggle: React.FC = () => {
-  const { theme, toggleTheme } = useTheme(); // Use o tema do contexto
-
+  const { theme, toggleTheme } = useTheme(); 
   return (
     <Button variant="theme" size="medium"
       onClick={toggleTheme} 

@@ -1,9 +1,7 @@
-// src/app/products/register/page.tsx
-
-"use client"; // Garante que a página será renderizada no lado do cliente
+"use client"; 
 
 import React from "react";
-import ProductForm from "@/components/product/ProductForm";  // Importando o formulário de produto
+import ProductForm from "@/components/product/ProductForm";  
 
 const RegisterProductPage: React.FC = () => {
   return (

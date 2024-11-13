@@ -1,5 +1,3 @@
-// src/components/hooks/useProducts.ts
-
 "use client";
 
 import { useEffect, useState, useCallback } from "react";

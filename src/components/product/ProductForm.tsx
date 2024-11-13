@@ -11,6 +11,7 @@ interface ApiErrorResponse {
 }
 
 const ProductForm: React.FC = () => {
+  // States para armazenar os dados do produto e o estado do formulário
   const [productName, setProductName] = useState<string>("");
   const [productPrice, setProductPrice] = useState<string>("");
   const [productAmount, setProductAmount] = useState<string>("");
@@ -18,7 +19,6 @@ const ProductForm: React.FC = () => {
   const [productCategory, setProductCategory] = useState<string | undefined>("");
   const [isActive, setIsActive] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({
     productName: "",
     productPrice: "",
@@ -26,10 +26,9 @@ const ProductForm: React.FC = () => {
     productDescription: "",
     productCategory: "",
   });
-
   const [notification, setNotification] = useState<{ message: string; type: "error" | "success" } | null>(null);
 
-  // Função de validação em tempo real
+  // Função de validação em tempo real para cada campo
   const handleValidation = (field: string, value: string) => {
     const updatedFields = {
       productName,
@@ -40,22 +39,20 @@ const ProductForm: React.FC = () => {
       [field]: value,
     };
 
-    // Validar e obter os erros atualizados
     const validationErrors = validateProductFields(updatedFields);
 
-    // Atualizar o erro específico
     setFieldErrors((prevErrors) => ({
       ...prevErrors,
       [field]: validationErrors[field as keyof FieldErrors],
     }));
   };
 
-  // Função de submissão do formulário
+  // Função de envio do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setNotification(null);
 
-    // Validação do formulário antes de enviar
+    // Valida os campos antes de submeter
     const validationErrors = validateProductFields({
       productName,
       productPrice,
@@ -65,12 +62,13 @@ const ProductForm: React.FC = () => {
     });
     setFieldErrors(validationErrors);
 
-    // Verifica se há erros antes de enviar
+    // Se houver erros de validação, não envia
     if (Object.values(validationErrors).some((error) => error !== "")) return;
 
     setIsLoading(true);
 
     try {
+      // Normaliza o preço e envia os dados
       const normalizedPrice = parseFloat(productPrice.replace(",", "."));
       await axiosInstance.post("/products", {
         name: productName,
@@ -83,7 +81,7 @@ const ProductForm: React.FC = () => {
 
       setNotification({ message: "Produto cadastrado com sucesso!", type: "success" });
 
-      // Limpar campos após sucesso
+      // Limpa os campos após sucesso
       setProductName("");
       setProductPrice("");
       setProductAmount("");
@@ -91,6 +89,7 @@ const ProductForm: React.FC = () => {
       setProductCategory("");
       setIsActive(true);
     } catch (error) {
+      // Lida com erros de rede ou resposta da API
       const axiosError = error as AxiosError<ApiErrorResponse>;
       if (!axiosError.response) {
         setNotification({ message: "Erro de rede. Verifique sua conexão.", type: "error" });
@@ -119,6 +118,7 @@ const ProductForm: React.FC = () => {
     }
   };
 
+  // Validação para habilitar/desabilitar o botão de submit
   const isFormValid =
     productName.trim() !== "" &&
     productPrice.trim() !== "" &&
@@ -131,15 +131,16 @@ const ProductForm: React.FC = () => {
     <div
       className="min-w-screen min-h-full bg-gray-50 dark:bg-gray-800 p-8 rounded-lg shadow-xl"
       style={{
-        minHeight: "500px", // Garantir altura mínima
+        minHeight: "500px", // Altura mínima do formulário
         maxWidth: "800px",  // Largura máxima
-        width: "100%",      // Largura 100% dentro do contêiner
+        width: "100%",      // Largura responsiva
         overflowY: "auto",  // Controle de rolagem vertical
-        margin: "0 auto",   // Centralizar horizontalmente
+        margin: "0 auto",   // Centraliza o formulário
       }}
     >
       <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-6">Registrar Novo Produto</h2>
 
+      {/* Exibe notificações de sucesso ou erro */}
       {notification && (
         <Notification
           message={notification.message}
@@ -150,6 +151,7 @@ const ProductForm: React.FC = () => {
       )}
 
       <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
+        {/* Input para Nome, Preço e Quantidade */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Input
             label="Nome do Produto"
@@ -169,19 +171,16 @@ const ProductForm: React.FC = () => {
             type="text"
             value={productPrice}
             onChange={(e) => {
-              let value = e.target.value.replace(/[^0-9,\.]/g, ""); // Remove caracteres inválidos
-
-              // Substitui vírgula por ponto, se necessário, para garantir um único separador decimal
+              let value = e.target.value.replace(/[^0-9,\.]/g, "");
               value = value.replace(",", ".");
 
-              // Garante que o valor tenha no máximo duas casas decimais
               const parts = value.split(".");
               if (parts.length > 2) {
-                value = parts[0] + "." + parts[1]; // Limita a um único ponto
+                value = parts[0] + "." + parts[1];
               }
 
               if (parts[1] && parts[1].length > 2) {
-                value = parts[0] + "." + parts[1].substring(0, 2); // Limita a 2 casas decimais
+                value = parts[0] + "." + parts[1].substring(0, 2);
               }
 
               setProductPrice(value);
@@ -197,7 +196,7 @@ const ProductForm: React.FC = () => {
             type="text"
             value={productAmount}
             onChange={(e) => {
-              const value = e.target.value.replace(/[^0-9]/g, ""); // Permite apenas números inteiros
+              const value = e.target.value.replace(/[^0-9]/g, "");
               setProductAmount(value);
               handleValidation("productAmount", value);
             }}
@@ -207,6 +206,7 @@ const ProductForm: React.FC = () => {
           />
         </div>
 
+        {/* Input para Descrição e Categoria */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Input
             label="Descrição do Produto"
@@ -233,6 +233,7 @@ const ProductForm: React.FC = () => {
           />
         </div>
 
+        {/* Checkbox para o status de ativo */}
         <div>
           <label className="block text-gray-800 dark:text-gray-100">Status</label>
           <div className="flex items-center space-x-4 mt-2">
@@ -250,6 +251,7 @@ const ProductForm: React.FC = () => {
           </div>
         </div>
 
+        {/* Botão de submissão */}
         <div className="mt-6">
           <Button
             type="submit"

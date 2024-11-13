@@ -1,5 +1,3 @@
-// frontend/src/components/layout/Footer.tsx
-
 import React from "react";
 
 const Footer: React.FC = () => {
@@ -10,10 +8,11 @@ const Footer: React.FC = () => {
           <div className="flex space-x-8 text-sm">
             <p className="text-gray-800 dark:text-gray-100">Frontend: Bruno Patrick</p>
             <p className="text-gray-800 dark:text-gray-100">Backend: João Marcos</p>
+            <p className="text-gray-800 dark:text-gray-100">Fullstack: Talles Gabriel</p>
           </div>
           <div className="border-t border-gray-600 w-full mt-4"></div>
           <p className="text-xs text-gray-800 mt-4 dark:text-gray-100">
-            © 2024 Gerenciador de Produtos. Todos os direitos reservados.
+            © 2024 Gerenciador de Produtos. Desenvolvendo um CRUD.
           </p>
         </div>
       </div>

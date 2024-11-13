@@ -1,5 +1,3 @@
-// src/components/ui/ConfirmationModal.tsx
-
 import React from "react";
 
 interface ConfirmationModalProps {
@@ -10,7 +8,7 @@ interface ConfirmationModalProps {
   message: string;
   confirmText: string;
   cancelText: string;
-  icon?: React.ReactNode;  // Permite passar um ícone personalizado
+  icon?: React.ReactNode;
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({

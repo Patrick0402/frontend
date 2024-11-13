@@ -15,6 +15,7 @@ interface ProductEditModalProps {
   productAmount: string;
   productDescription: string | undefined;
   productCategory: string | undefined;
+  onProductUpdated: () => Promise<void>;
 }
 
 const ProductEditModal: React.FC<ProductEditModalProps> = ({
@@ -26,6 +27,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
   productAmount: initialProductAmount,
   productDescription: initialProductDescription,
   productCategory: initialProductCategory,
+  onProductUpdated,
 }) => {
   const [productName, setProductName] = useState<string>(initialProductName);
   const [productPrice, setProductPrice] = useState<string>(initialProductPrice);
@@ -45,7 +47,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
 
   useEffect(() => {
     if (!isOpen) {
-      // Reset fields when modal is closed
+
       setProductName(initialProductName);
       setProductPrice(initialProductPrice);
       setProductAmount(initialProductAmount);
@@ -106,6 +108,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
       });
 
       setNotification({ message: "Produto atualizado com sucesso!", type: "success" });
+      onProductUpdated(); 
       onClose();
     } catch (error) {
       const axiosError = error as AxiosError;

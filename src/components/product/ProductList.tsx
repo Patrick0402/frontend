@@ -1,14 +1,12 @@
-// src/components/product/ProductList.tsx
-
-"use client";
+"use client"
 
 import React from "react";
 import useProducts from "../../hooks/useProducts";
 import ProductCard from "./ProductCard";
-import Scrollbar from "../ui/Scrollbar";  // Importando o componente Scrollbar
+import Scrollbar from "../ui/Scrollbar"; 
 
 const ProductList: React.FC = () => {
-  const { products, loading, deleteProduct, handleToggleStatus } = useProducts();
+  const { products, loading, deleteProduct, handleToggleStatus, handleQuantityChange } = useProducts();
 
   if (loading) return <p>Carregando produtos...</p>;
 
@@ -25,15 +23,15 @@ const ProductList: React.FC = () => {
       {/* Coluna de Produtos Ativos */}
       <div className="flex-1">
         <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Produtos Ativos</h3>
-        {/* Envolvendo com o componente Scrollbar */}
         <Scrollbar className="h-[70vh] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
           {activeProducts.length > 0 ? (
             activeProducts.map((product) => (
-              <ProductCard 
+              <ProductCard
                 key={product.id}
                 product={product}
                 onDelete={deleteProduct}
                 onToggleStatus={handleToggleStatus}
+                onQuantityChange={handleQuantityChange} 
               />
             ))
           ) : (
@@ -45,15 +43,15 @@ const ProductList: React.FC = () => {
       {/* Coluna de Produtos Inativos */}
       <div className="flex-1">
         <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Produtos Inativos</h3>
-        {/* Envolvendo com o componente Scrollbar */}
         <Scrollbar className="h-[70vh] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg p-4 space-y-4 border border-gray-300 dark:border-gray-700">
           {inactiveProducts.length > 0 ? (
             inactiveProducts.map((product) => (
-              <ProductCard 
+              <ProductCard
                 key={product.id}
                 product={product}
                 onDelete={deleteProduct}
                 onToggleStatus={handleToggleStatus}
+                onQuantityChange={handleQuantityChange}
               />
             ))
           ) : (

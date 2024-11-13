@@ -1,5 +1,3 @@
-// frontend/src/components/layout/Header.tsx
-
 import React from "react";
 import Button from "../ui/Button";
 import Link from "next/link";
@@ -36,12 +34,6 @@ const Header: React.FC = () => {
           {/* Componente de troca de tema */}
           <ThemeToggle />
           
-          {/* Link de login */}
-          <Link href="/login" passHref>
-            <Button variant="secondary" size="medium">
-              Login
-            </Button>
-          </Link>
         </div>
       </div>
     </header>

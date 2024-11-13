@@ -9,7 +9,13 @@ import Notification from "../../../components/ui/Notification";
 import ConfirmationModal from "../../../components/ui/ConfirmationModal";
 import ProductEditModal from "../../../components/product/ProductEditModal";
 import useProducts from "../../../hooks/useProducts";
-import { FiTrash2, FiPackage, FiCheckCircle, FiXCircle } from "react-icons/fi";
+import {
+  FiTrash2,
+  FiPackage,
+  FiCheckCircle,
+  FiXCircle,
+  FiRefreshCw,
+} from "react-icons/fi";
 
 interface ProductDetail {
   id: number;
@@ -19,10 +25,11 @@ interface ProductDetail {
   quantity_in_stock: number;
   category: string;
   isActive: boolean;
+  onProductUpdated: () => Promise<void>;
 }
 
 const ProductDetailPage = () => {
-  const { id } = useParams(); // id é string | undefined
+  const { id } = useParams(); 
   const router = useRouter();
   const { handleToggleStatus, handleQuantityChange } = useProducts();
 
@@ -35,6 +42,7 @@ const ProductDetailPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUpdatingQuantity, setIsUpdatingQuantity] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
   const fetchProductDetails = useCallback(async () => {
     if (!id) return;
@@ -89,12 +97,24 @@ const ProductDetailPage = () => {
   const handleToggleProductStatus = async () => {
     if (product?.id) {
       try {
+        // Chama a função que altera o status
         await handleToggleStatus(product.id, !product.isActive);
+
+        // Atualiza o estado do produto com o novo status
         setProduct((prevProduct) =>
           prevProduct
             ? { ...prevProduct, isActive: !prevProduct.isActive }
             : prevProduct
         );
+
+        // Fecha o modal após o status ser alterado com sucesso
+        setIsStatusModalOpen(false);
+
+        // Adicione uma notificação de sucesso, se necessário
+        setNotification({
+          message: "Status do produto alterado com sucesso!",
+          type: "success",
+        });
       } catch (error: unknown) {
         const axiosError = error as AxiosError;
         console.error(axiosError);
@@ -256,7 +276,7 @@ const ProductDetailPage = () => {
                 Voltar para a lista
               </Button>
               <Button
-                onClick={handleToggleProductStatus}
+                onClick={() => setIsStatusModalOpen(true)}
                 variant="primary"
                 size="medium"
               >
@@ -279,38 +299,50 @@ const ProductDetailPage = () => {
             </div>
           </div>
         ) : (
-          <div className="text-center text-gray-700 dark:text-gray-300">
-            Nenhum dado de produto disponível.
+          <div className="text-center text-lg text-gray-700 dark:text-gray-300">
+            Produto não encontrado
           </div>
         )}
-
-        <ConfirmationModal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={handleDeleteProduct}
-          title="Confirmar Exclusão"
-          message="Tem certeza de que deseja excluir este produto?"
-          confirmText="Confirmar"
-          cancelText="Cancelar"
-          icon={<FiTrash2 className="text-red-600 dark:text-red-400" />}
-        />
-
-        {product && (
-          <ProductEditModal
-            isOpen={isEditModalOpen}
-            onClose={() => {
-              setIsEditModalOpen(false);
-              fetchProductDetails();
-            }}
-            productId={product.id}
-            productName={product.name}
-            productPrice={product.price.toString()}
-            productAmount={product.quantity_in_stock.toString()}
-            productDescription={product.description}
-            productCategory={product.category}
-          />
-        )}
       </div>
+
+      {/* Modal de Edição */}
+      <ProductEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        productId={product?.id || 0}
+        productName={product?.name || ""}
+        productPrice={product?.price.toString() || ""}
+        productAmount={product?.quantity_in_stock.toString() || ""}
+        productDescription={product?.description}
+        productCategory={product?.category}
+        onProductUpdated={fetchProductDetails}
+      />
+
+      {/* Modal de Exclusão */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteProduct}
+        title="Excluir Produto"
+        message="Tem certeza de que deseja excluir este produto?"
+        confirmText="Sim, excluir"
+        cancelText="Cancelar"
+        icon={<FiTrash2 className="text-red-600 dark:text-red-400" />}
+      />
+
+      {/* Modal de Status */}
+      <ConfirmationModal
+        isOpen={isStatusModalOpen}
+        onClose={() => setIsStatusModalOpen(false)}
+        onConfirm={handleToggleProductStatus}
+        title={product?.isActive ? "Desativar Produto" : "Ativar Produto"}
+        message={`Tem certeza de que deseja ${
+          product?.isActive ? "desativar" : "ativar"
+        } este produto?`}
+        confirmText={product?.isActive ? "Desativar" : "Ativar"}
+        cancelText="Cancelar"
+        icon={<FiRefreshCw className="text-yellow-500 dark:text-yellow-200" />}
+      />
     </div>
   );
 };

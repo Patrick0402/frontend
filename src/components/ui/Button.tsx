@@ -1,5 +1,3 @@
-// src/components/ui/Button.tsx
-
 "use client";
 
 import React from "react";
@@ -7,7 +5,7 @@ import { useTheme } from "../../context/themeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger" | "theme" | "link" | "quantity"; // Adiciona novo tipo
+  variant?: "primary" | "secondary" | "danger" | "theme" | "link" | "quantity";
   size?: "small" | "medium" | "large";
   isLoading?: boolean;
   children: React.ReactNode;
@@ -43,7 +41,9 @@ const Button: React.FC<ButtonProps> = ({
       ? "bg-transparent text-white hover:text-gray-100 underline"
       : "bg-transparent text-gray-800 hover:text-blue-900 underline",
 
-    quantity: "bg-gray-300 text-gray-600 hover:bg-gray-400 hover:text-gray-800", // Classe para botões de controle de quantidade
+    quantity: theme === "dark"
+      ? "bg-gray-700 text-gray-300 hover:bg-gray-600 text-xl py-1 px-3 rounded-md transition-all duration-200 ease-in-out flex items-center justify-center space-x-2 hover:text-white min-w-[3rem]" 
+      : "bg-gray-300 text-gray-800 hover:bg-gray-400 text-xl py-1 px-3 rounded-md transition-all duration-200 ease-in-out flex items-center justify-center space-x-2 hover:text-white min-w-[3rem]", 
   };
 
   const sizeClasses = {
@@ -52,7 +52,6 @@ const Button: React.FC<ButtonProps> = ({
     large: "px-6 py-3 text-lg",
   };
 
-  // Removendo w-full para limitar a área clicável ao próprio botão
   const buttonClassNames = `flex items-center justify-center rounded-md font-medium transition-all ${variantClasses[variant]} ${sizeClasses[size]} ${
     isLoading ? "opacity-50 cursor-not-allowed" : ""
   }`;
