@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Product } from "../../hooks/useProducts";
 import Button from "../ui/Button";
 import Link from "next/link";
-import { FiCheckCircle, FiXCircle } from "react-icons/fi";  // Ícones para ativo e inativo
+import { FiCheckCircle, FiXCircle, FiTrash2, FiRefreshCw } from "react-icons/fi";  // Adicionando ícones para ações
 import ConfirmationModal from "../ui/ConfirmationModal"; // Importando o Modal de Confirmação
 
 interface ProductCardProps {
@@ -36,6 +36,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete, onToggleSt
     setIsModalOpen(false);  // Fechar o modal após a confirmação
   };
 
+  // Ícone a ser exibido no modal de confirmação
+  const actionIcon = actionType === 'delete' ? (
+    <FiTrash2 className="text-red-600 dark:text-red-400" />  // Ícone vermelho no modo escuro e mais suave no modo claro
+  ) : (
+    <FiRefreshCw className="text-yellow-500 dark:text-yellow-200" />  // Amarelo mais suave no modo escuro e mais forte no modo claro
+  );
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded-lg flex shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-300 dark:border-gray-600 hover:border-gray-400">
       {/* Link para redirecionar ao detalhe do produto */}
@@ -90,6 +96,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete, onToggleSt
           `Tem certeza de que deseja ${product.isActive ? "desativar" : "ativar"} este produto?`}
         confirmText="Confirmar"
         cancelText="Cancelar"
+        icon={actionIcon}  // Passando o ícone dinamicamente
       />
     </div>
   );

@@ -10,6 +10,7 @@ interface ConfirmationModalProps {
   message: string;
   confirmText: string;
   cancelText: string;
+  icon?: React.ReactNode;  // Permite passar um ícone personalizado
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -20,6 +21,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   message,
   confirmText,
   cancelText,
+  icon,
 }) => {
   if (!isOpen) return null; // Não renderiza o modal se não estiver aberto
 
@@ -37,7 +39,11 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         onClick={(e) => e.stopPropagation()} // Impede o clique no conteúdo do modal de fechar o modal
       >
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+          <div className="flex items-center space-x-3">
+            {/* Ícone Condicional */}
+            {icon && <div className="text-xl">{icon}</div>}
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+          </div>
           <p className="mt-2 text-gray-600 dark:text-gray-300">{message}</p>
           <div className="mt-6 flex justify-end space-x-4">
             <button
