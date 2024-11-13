@@ -1,25 +1,25 @@
 // /src/components/ui/Notification.tsx
 
-
 "use client";
 
 import React, { useEffect } from "react";
+import { FiCheckCircle, FiXCircle } from "react-icons/fi";
 
 interface NotificationProps {
   message: string;
-  type: "success" | "error"; // Adiciona variação de tipo se precisar
+  type: "success" | "error"; 
   onClose: () => void;
-  duration?: number; // Em milissegundos (por exemplo, 3000 para 3 segundos)
+  duration?: number; // Duração da notificação (em milissegundos)
 }
 
 const Notification: React.FC<NotificationProps> = ({ message, type, onClose, duration = 3000 }) => {
   useEffect(() => {
-    // Fechar automaticamente após `duration` milissegundos
+    // Fechar automaticamente após a duração especificada
     const timer = setTimeout(() => {
       onClose();
     }, duration);
 
-    // Limpa o timer se o componente desmontar ou `onClose` for chamado manualmente
+    // Limpar o timer se o componente desmontar ou se a notificação for fechada manualmente
     return () => clearTimeout(timer);
   }, [onClose, duration]);
 
@@ -27,9 +27,14 @@ const Notification: React.FC<NotificationProps> = ({ message, type, onClose, dur
     <div
       className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 transition-opacity duration-300 ${
         type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white"
-      }`}
+      } opacity-100`}
     >
       <div className="flex items-center">
+        {type === "success" ? (
+          <FiCheckCircle className="mr-2 text-white" />
+        ) : (
+          <FiXCircle className="mr-2 text-white" />
+        )}
         <span>{message}</span>
         <button
           onClick={onClose}

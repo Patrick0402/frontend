@@ -7,7 +7,7 @@ import { useTheme } from "../../context/themeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger" | "theme" | "link";
+  variant?: "primary" | "secondary" | "danger" | "theme" | "link" | "quantity"; // Adiciona novo tipo
   size?: "small" | "medium" | "large";
   isLoading?: boolean;
   children: React.ReactNode;
@@ -24,22 +24,26 @@ const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     primary: theme === "dark"
-    ? "bg-transparent border-2 border-blue-300 text-blue-300 hover:bg-blue-300 hover:text-white"
-    : "bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white",
+      ? "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-400 hover:border-blue-400 hover:text-white"
+      : "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:text-white",
 
     secondary: theme === "dark"
-      ? "bg-transparent border-2 border-gray-400 text-gray-400 hover:bg-gray-400 hover:text-white"
-      : "bg-transparent border-2 border-gray-500 text-gray-800 hover:bg-gray-500 hover:text-white",
+      ? "bg-transparent border-2 border-gray-400 text-gray-400 hover:bg-gray-400 hover:border-gray-400 hover:text-white"
+      : "bg-transparent border-2 border-gray-600 text-gray-600 hover:bg-gray-600 hover:border-gray-600 hover:text-white",
 
-    danger: "bg-red-500 text-white hover:bg-red-600",
-    
+    danger: theme === "dark"
+      ? "bg-red-500 text-white hover:bg-red-600"
+      : "bg-red-600 text-white hover:bg-red-500",
+
     theme: theme === "dark"
       ? "bg-transparent text-white hover:bg-gray-800"
       : "bg-transparent text-gray-800 hover:bg-gray-400",
 
     link: theme === "dark"
       ? "bg-transparent text-white hover:text-gray-100 underline"
-      : "bg-transparent text-gray-800 hover:text-blue-900 underline"
+      : "bg-transparent text-gray-800 hover:text-blue-900 underline",
+
+    quantity: "bg-gray-300 text-gray-600 hover:bg-gray-400 hover:text-gray-800", // Classe para botões de controle de quantidade
   };
 
   const sizeClasses = {

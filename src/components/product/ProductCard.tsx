@@ -17,7 +17,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete, onToggleSt
 
   // Função para formatar o preço
   const formatPrice = (price: number | string) =>
-    `$${(typeof price === "number" ? price : parseFloat(price)).toFixed(2)}`;
+    `R$${(typeof price === "number" ? price : parseFloat(price)).toFixed(2)}`;
 
   // Função para abrir o modal com o tipo de ação
   const openModal = (action: 'delete' | 'toggle') => {
