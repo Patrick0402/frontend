@@ -22,15 +22,23 @@ const Button: React.FC<ButtonProps> = ({
 
   // Definindo as classes de estilo para cada variante de botão
   const variantClasses = {
-    primary: "bg-blue-500 text-white hover:bg-blue-600",
-    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+    primary: theme === "dark"
+      ? "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+      : "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
+
+    secondary: theme === "dark"
+      ? "bg-transparent border-2 border-gray-500 text-gray-400 hover:bg-gray-500 hover:text-white"
+      : "bg-transparent border-2 border-gray-500 text-gray-800 hover:bg-gray-500 hover:text-white",
+
     danger: "bg-red-500 text-white hover:bg-red-600",
+    
     theme: theme === "dark"
       ? "bg-gray-800 text-white hover:bg-gray-700"
       : "bg-gray-100 text-gray-800 hover:bg-gray-200",
+
     link: theme === "dark"
       ? "bg-transparent text-white hover:text-gray-100"
-      : "bg-transparent text-gray-800 hover:text-blue-900"
+      : "bg-transparent text-gray-800 hover:text-blue-900 underline"
   };
 
   // Definindo as classes de estilo para os tamanhos de botão
